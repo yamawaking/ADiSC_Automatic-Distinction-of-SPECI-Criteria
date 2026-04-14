@@ -1,4 +1,4 @@
-# ADiSC
+# ADiSC (under construction)
 ADiSC- Automatic Distinction of SPECI Criteria
 ## Overview
 -ADiSC is a Python tool to detect and identify if weather changes meet SPECI criteria for reports of aviation weather observations. 
