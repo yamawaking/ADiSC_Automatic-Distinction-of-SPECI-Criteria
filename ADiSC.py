@@ -55,12 +55,12 @@ def distinction_wind(prev_wd, prev_ws, prev_gust, curr_wd, curr_ws, curr_gust, c
         is_caution = True
         criteria = conf["gust_ws_diff_min"]
         reason += ""
-        caution += f"CAUTION: the difference between current wind speed and gust is less than {criteria}KT\n注意: 変化後の平均風速とガストの差が{criteria}KT未満です\nThere may be errors in the execution results, so correct them and run again.\n実行結果に誤りがある可能性があるので、訂正後再実行してください\n"
+        caution += f"the difference between current wind speed and gust is less than {criteria}KT\n注意: 変化後の平均風速とガストの差が{criteria}KT未満です\nThere may be errors in the execution results, so correct them and run again.\n実行結果に誤りがある可能性があるので、訂正後再実行してください\n"
     if diff_preg_prews < conf["gust_ws_diff_min"] and prev_gust != 0:
         is_caution = True
         criteria = conf["gust_ws_diff_min"]
         reason += ""
-        caution += f"CAUTION: the difference between previous wind speed and gust is less than {criteria}KT\n注意: 変化前の平均風速とガストの差が{criteria}KT未満です\nThere may be errors in the execution results, so correct them and run again.\n実行結果に誤りがある可能性があるので、訂正後再実行してください\n"
+        caution += f"the difference between previous wind speed and gust is less than {criteria}KT\n注意: 変化前の平均風速とガストの差が{criteria}KT未満です\nThere may be errors in the execution results, so correct them and run again.\n実行結果に誤りがある可能性があるので、訂正後再実行してください\n"
     if curr_ws >= conf["min_ws_for_gust_rule"]:
         preg = prev_gust if prev_gust else 0
         curg = curr_gust if curr_gust else 0
