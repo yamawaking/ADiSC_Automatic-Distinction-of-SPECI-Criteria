@@ -71,12 +71,12 @@ def distinction_wind(prev_wd, prev_ws, prev_gust, curr_wd, curr_ws, curr_gust, c
         diff_gust_val = curg - preg
         criteria = conf["gust_change_criteria"]
         if conf["only_deterioration_gust_change"]:
-            if diff_gust_val >= criteria:
+            if preg != 0 and curg != 0 and diff_gust_val >= criteria:
                 is_speci = True
-                reason += f"Gust increased by {diff_gust_val}KT (criteria: {criteria}KT or more)\nガスト増加{diff_gust_val}KT (基準; {criteria}KT以上)"
+                reason += f"Gust increased by {diff_gust_val}KT (criteria: {criteria}KT or more)\nガスト増加{diff_gust_val}KT (基準; {criteria}KT以上)\n"
                 caution += ""
         else:
-            if abs(diff_gust_val) >= criteria:
+            if preg != 0 and curg != 0 and abs(diff_gust_val) >= criteria:
                 is_speci = True
                 reason += f"Gust changed by {abs(diff_gust_val)}KT (criteria: {criteria}KT or more)\nガスト変化{abs(diff_gust_val)}KT (基準: {criteria}KT以上)\n"
                 caution += ""
@@ -199,25 +199,28 @@ def distinction_cld(prev_ceil, curr_ceil, conf):
                     reason += f"ceiling increased above {t}ft\nシーリングが{t}ftを上回りました\n"
                     caution += ""
     return is_caution, is_speci, reason, caution                
-                
+
+#PREVIOUS OBSERVATION VALUE
 previous_wind_direction = 20
 previous_wind_speed = 10
-previous_gust = 12
+previous_gust = 0
 previous_vis = 6000
-previous_weather1 = "-RA"
+previous_weather1 = "RA"
 previous_weather2 = "BR"
 previous_weather3 = "-TS"
-previous_weather4 = "-SN"
+previous_weather4 = ""
 previous_weather5 = ""
 previous_ceil = ""
+
+#CURRENT OBSERVATION VALUE
 current_wind_direction = "VRB"
-current_wind_speed = 3
-current_gust = 0
+current_wind_speed = 15
+current_gust = 25
 current_vis = 400
-current_weather1 = "RA"
+current_weather1 = "-RA"
 current_weather2 = "BR"
 current_weather3 = ""
-current_weather4 = "SN"
+current_weather4 = ""
 current_weather5 = ""
 current_ceil = 2000
 
