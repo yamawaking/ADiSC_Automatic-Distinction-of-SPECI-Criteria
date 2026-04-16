@@ -15,7 +15,21 @@ ADISC_CONFIG_vis = {
     "vis_thresholds": [5000, 1600, 1500, 800],
     "only_deterioration_vis": False
     }
-
+ADISC_CONFIG_wx = {
+    "speci_weather": ["TS", "FC", "DZ", "RA", "SN", "GR", "FZRA", "FZDZ", "RASN", "SNRA", "BLSA", "DUSA", "BLDU", "DRDU", "BLSN", "DRSN", "SQ", "FZFG"],
+    "check_intensity_change": True,
+    "intensity_levels": {
+        "ltomh_weather": ["TS", "GR", "FZRA", "FZDZ", "SNRA", "RASN", "DZ", "RA", "SN"],
+        "lmtoh_weather": ["FC", "SS"],
+        "htolm_weather": ["FC", "SS"],
+        "mhtol_weather": ["TS", "GR", "FZRA", "FZDZ", "SNRA", "RASN", "DZ", "RA", "SN"],
+        },
+    "only_deterioration_wx": False
+    }
+ADISC_CONFIG_cld = {
+    "cld_thresholds": [100, 200, 300, 400, 500, 1000, 1500, 2000, 3000],
+    "only_deterioration_cld": False
+    }
 def distinction_wind(prev_wd, prev_ws, prev_gust, curr_wd, curr_ws, curr_gust, conf):
     is_speci = False
     is_caution = False
@@ -109,16 +123,104 @@ def distinction_vis(prev_vis, curr_vis, conf):
                 reason += f"visibility increased above {t}m\n視程が{t}mを上回りました\n"
                 caution += ""
     return is_caution, is_speci, reason, caution
-
-
+def distinction_wx(prev_wx, curr_wx, conf):
+    is_speci = False
+    is_caution = False
+    reason = ""
+    caution = ""
+    def get_int_val(wx):
+        if wx == "": return 0
+        if "+" in wx: return 3
+        if "-" in wx: return 1
+        else: return 2
+    p_wx = prev_wx.replace("+", "").replace("-", "")
+    c_wx = curr_wx.replace("+", "").replace("-", "")
+    p_int = get_int_val(prev_wx)
+    c_int = get_int_val(curr_wx)
+    if p_wx != c_wx:
+        if p_wx == "" and c_wx in conf["speci_weather"]:
+            is_speci = True
+            reason += f"{curr_wx} began\n{curr_wx}が発現しました\n"
+            caution += ""
+        elif p_wx in conf["speci_weather"] and c_wx =="":
+            is_speci = True
+            reason += f"{prev_wx} ended\n{prev_wx}が終了しました\n"
+            caution += ""
+        elif p_wx in conf["speci_weather"] or c_wx in conf ["speci weather"]:
+            is_speci = True
+            is_caution = True
+            reason += f"{prev_wx} changed to {curr_wx}\n現在天気が{prev_wx}から{curr_wx}へ変化しました\n"
+            caution += f"check again by yourself whether this change meets the SPECI criteria of your observatory\nこの天気変化があなたの観測所の特別観測基準に該当するか、改めてご自分でご確認ください\n"
+    elif p_wx == c_wx and p_wx != "" and conf["check_intensity_change"]:
+        if p_int != c_int:
+            is_deterioration = (c_int > p_int)
+            meet_criteria = False
+            if p_wx in conf["intensity_levels"]["ltomh_weather"]:     
+                if (p_int == 1 and c_int >= 2):
+                    meet_criteria = True
+            if p_wx in conf["intensity_levels"]["lmtoh_weather"]:
+                if (p_int <= 2 and c_int == 3):
+                    meet_criteria = True
+            if p_wx in conf["intensity_levels"]["htolm_weather"]:
+                if (p_int == 3 and c_int <= 2):
+                    meet_criteria = True
+            if p_wx in conf["intensity_levels"]["mhtol_weather"]:
+                if (p_int >= 2 and c_int == 1):
+                    meet_criteria = True
+            if meet_criteria:
+                is_speci = True
+                reason += f"{prev_wx} changed to {curr_wx}\n現在天気が{prev_wx}から{curr_wx}へ変化しました\n"
+                caution += ""
+    return is_caution, is_speci, reason, caution
+def distinction_cld(prev_ceil, curr_ceil, conf):
+    is_speci = False
+    is_caution = False
+    reason = ""
+    caution = ""
+    if prev_ceil == "" and curr_ceil != "":
+        is_speci = True
+        reason += f"ceiling appeared\nシーリングが発現しました"
+        caution += ""
+    elif prev_veil != "" and curr_ceil == "":
+        if not conf["only_deterioration_cld"]:
+            is_speci = True
+            reason += f"ceiling disappeared\nシーリングが終了しました\n"
+            caution += ""
+    else:
+        thresholds = sorted(conf["cld_thresholds"], reverse = True)
+        for t in thresholds:
+            if prev_ceil >= t > curr_ceil:
+                is_speci = True
+                reason += f"ceiling decreased below {t}ft\nシーリングが{t}ftを下回りました\n"
+                caution += ""
+            elif prev_ceil < t <= curr_ceil:
+                if not conf["only_deterioration_cld"]:
+                    is_speci = True
+                    reason += f"ceiling increased above {t}ft\nシーリングが{t}ftを上回りました\n"
+                    caution += ""
+    return is_caution, is_speci, reason, caution                
+                
 previous_wind_direction = 20
 previous_wind_speed = 10
 previous_gust = 12
-previous_vis = 4000
+previous_vis = 6000
+previous_weather1 = "-RA"
+previous_weather2 = "BR"
+previous_weather3 = "-TS"
+previous_weather4 = "-SN"
+previous_weather5 = ""
+previous_ceil = ""
 current_wind_direction = "VRB"
 current_wind_speed = 3
 current_gust = 0
-current_vis = 5000
+current_vis = 400
+current_weather1 = "RA"
+current_weather2 = "BR"
+current_weather3 = ""
+current_weather4 = "SN"
+current_weather5 = ""
+current_ceil = 2000
+
 
 wind_caution, wind_speci, wind_msg, wind_cau = distinction_wind(
     previous_wind_direction,
@@ -134,10 +236,40 @@ vis_caution, vis_speci, vis_msg, vis_cau = distinction_vis(
     current_vis,
     ADISC_CONFIG_vis
 )
-final_speci = wind_speci or vis_speci
-final_caution = wind_caution or vis_caution
-final_msg = wind_msg + vis_msg
-final_cau = wind_cau + vis_cau
+wx_caution1, wx_speci1, wx_msg1, wx_cau1 = distinction_wx(
+    previous_weather1,
+    current_weather1,
+    ADISC_CONFIG_wx
+)
+wx_caution2, wx_speci2, wx_msg2, wx_cau2 = distinction_wx(
+    previous_weather2,
+    current_weather2,
+    ADISC_CONFIG_wx
+)
+wx_caution3, wx_speci3, wx_msg3, wx_cau3 = distinction_wx(
+    previous_weather3,
+    current_weather3,
+    ADISC_CONFIG_wx
+)
+wx_caution4, wx_speci4, wx_msg4, wx_cau4 = distinction_wx(
+    previous_weather4,
+    current_weather4,
+    ADISC_CONFIG_wx
+)
+wx_caution5, wx_speci5, wx_msg5, wx_cau5 = distinction_wx(
+    previous_weather5,
+    current_weather5,
+    ADISC_CONFIG_wx
+)
+cld_caution, cld_speci, cld_msg, cld_cau = distinction_cld(
+    previous_ceil,
+    current_ceil,
+    ADISC_CONFIG_cld
+)
+final_speci = wind_speci or vis_speci or wx_speci1 or wx_speci2 or wx_speci3 or wx_speci4 or wx_speci5 or cld_speci
+final_caution = wind_caution or vis_caution or wx_caution1 or wx_caution2 or wx_caution3 or wx_caution4 or wx_caution5 or cld_caution
+final_msg = wind_msg + vis_msg + wx_msg1 + wx_msg2 + wx_msg3 + wx_msg4 + wx_msg5 + cld_msg
+final_cau = wind_cau + vis_cau + wx_cau1 + wx_cau2 + wx_cau3 + wx_cau4 + wx_cau5 + cld_cau
 if final_caution:
     print(f"CAUTION: {final_cau}\n")
 if final_speci:
