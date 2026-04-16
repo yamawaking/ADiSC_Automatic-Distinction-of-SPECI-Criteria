@@ -1,4 +1,4 @@
-# ADiSC (under construction)
+# ADiSC
 ADiSC- Automatic Distinction of SPECI Criteria
 
 ADiSC（アディスク）……飛行場実況気象報特別観測基準自動判別ツール
