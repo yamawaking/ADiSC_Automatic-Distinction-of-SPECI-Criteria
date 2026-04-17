@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ADiSC Web Prototype</title>
+    <style>
+        body{font-family: sans-serif; margin: 50px; line-height: 1.6;}
+        .result{margin-top: 20px; padding: 15px; border: 1px solid #ccc; background: #f9f9; font-weight: bold; color: blue;}
+        input{margin-bottom: 10px; padding: 5px;}
+    </style>
+</head>
+<body>
+    <h1>ADiSC 判定ツール (Prototype)</h1>
+
+    <form method="POST">
+        <label>前回の視程 (m): </label><br>
+        <input type="number" name="prev_vis" required><br>
+
+        <label>現在の視程 (m): </label><br>
+        <input type="number" name="curr_vis" required><br>
+
+        <button type="submit">判定実行</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        {{result}}
+    </div>
+    {%endif%}
+</body>
+</html>
