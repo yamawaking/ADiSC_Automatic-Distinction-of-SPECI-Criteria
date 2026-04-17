@@ -1,4 +1,4 @@
-# ADiSC (under construction)
+# ADiSC
 ADiSC- Automatic Distinction of SPECI Criteria
 
 ADiSC（アディスク）……飛行場実況気象報特別観測基準自動判別ツール
@@ -51,3 +51,8 @@ ADiSC（アディスク）……飛行場実況気象報特別観測基準自動
       Make sure to check the result again by yourself whether or not it is correct.
 
       実行結果が正しいかどうか、必ず自ら再確認をおこなってください。
+
+## Postscript
+The available-on-the-web version of this tool is under construction now. It will becomw much easier to ise.
+
+このツールのウェブ上で使用可能なバージョンを開発中です。より簡単に操作できるようになるでしょう。
