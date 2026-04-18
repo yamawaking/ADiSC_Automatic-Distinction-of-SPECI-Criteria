@@ -32,15 +32,15 @@ ADiSC（アディスク）……飛行場実況気象報特別観測基準自動
   
   いくつか使用上の注意点があります。
   
-    1. For wind direction, if it is VRB or the wind condition is CALM, imput "VRB", not 0.
+    1. For wind direction, if it is VRB or the wind condition is CALM, input "VRB", not 0.
     
        風向について、VRB（不定）またはCALM（静穏）の場合は0等ではなく"VRB"と入力してください。
     
-    2. For "previous_weather", "current_weather", "previous_ceil" and "current_ceil", if they are not exist, imput "" (2 double quotation marks), not 0 or "None". 
+    2. For "previous_weather", "current_weather", "previous_ceil" and "current_ceil", if they are not exist, input "" (2 double quotation marks), not 0 or "None". 
     
        現在天気とシーリングについては、存在していない場合は0やNoneではなく"" (ダブルクォーテーションマーク2つ) を入力してください。
    
-     3. For "previous_weather" and "current_weather", you must imput the same phenomenon in the same frame. For example, if you imput "-RA" in the frame "previous_weather1" and it chaged into "RA", imput it in the frame "current_weather1" not in "current_weather2"-"current_weather4". If you imput them in different frame, the distinction of intensity change will not be done correctly.
+     3. For "previous_weather" and "current_weather", you must input the same phenomenon in the same frame. For example, if you input "-RA" in the frame "previous_weather1" and it chaged into "RA", input it in the frame "current_weather1" not in "current_weather2"-"current_weather4". If you input them in different frame, the distinction of intensity change will not be done correctly.
    
       現在天気については、同一の現象は同一の枠へ入力してください。たとえば、"previous_weather1"に"-RA"を入力し、それが"RA"へ変わったとすれば、"current_weather2"～"current_weather4"の枠ではなく、"current_weather1"に"RA"と入力してください。枠が異なると、強度変化の判定が正しく行われません。
    
