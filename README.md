@@ -24,7 +24,7 @@ ADiSC（アディスク）……飛行場実況気象報特別観測基準自動
   
   CONCFIG欄では、特別観測基準を細かく設定することができます。「風速が10KT以上のときに風向が60度変化した場合、特別観測を送信する」「天気が悪化した場合は特別観測を送信するが、好転の場合は送信しない」など。
 
-2. Imput the latest and current observation value.
+2. Imput the latest and current observation values.
  
    最近の観測値と現在の観測値を入力してください。
  
