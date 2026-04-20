@@ -32,7 +32,7 @@ ADiSC（アディスク）……飛行場実況気象報特別観測基準自動
   
   いくつか使用上の注意点があります。
   
-      1. For wind direction, if it is VRB or the wind condition is CALM, input "VRB", not 0.
+    1. For wind direction, if it is VRB or the wind condition is CALM, input "VRB", not 0.
     
        風向について、VRB（不定）またはCALM（静穏）の場合は0等ではなく"VRB"と入力してください。
     
@@ -44,9 +44,9 @@ ADiSC（アディスク）……飛行場実況気象報特別観測基準自動
    
       現在天気については、同一の現象は同一の枠へ入力してください。たとえば、"previous_weather1"に"-RA"を入力し、それが"RA"へ変わったとすれば、"current_weather2"～"current_weather4"の枠ではなく、"current_weather1"に"RA"と入力してください。枠が異なると、強度変化の判定が正しく行われません。
    
-3. Run module.
+    3. Run module.
 
-      実行してください。
+         実行してください。
    
       Make sure to check the result again by yourself whether or not it is correct.
 
