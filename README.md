@@ -28,11 +28,11 @@ ADiSC（アディスク）……飛行場実況気象報特別観測基準自動
  
    最近の観測値と現在の観測値を入力してください。
  
-  Here are a few points to note↓
+  Here are a few points to note
   
   いくつか使用上の注意点があります。
   
-    1. For wind direction, if it is VRB or the wind condition is CALM, input "VRB", not 0.
+      1. For wind direction, if it is VRB or the wind condition is CALM, input "VRB", not 0.
     
        風向について、VRB（不定）またはCALM（静穏）の場合は0等ではなく"VRB"と入力してください。
     
